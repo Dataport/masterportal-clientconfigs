@@ -101,7 +101,7 @@ export function fillTemplate(template, config, opts) {
 			.map(it => fillTemplate(it, config, opts))
 			.filter(it => !(typeof it === 'object' && Object.keys(it).length === 0))
 	}
-	if(typeof template === 'object') {
+	if(typeof template === 'object' && template !== null) {
 		for(const [ k, v ] of Object.entries(template)) {
 			const res = checkTemplate(k, config, opts)
 			if(res) {
