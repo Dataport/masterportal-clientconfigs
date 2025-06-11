@@ -1,21 +1,20 @@
-
 import { readFileSync } from 'node:fs'
 import { URL, fileURLToPath } from 'node:url'
 
 const hitRatePerPortal = {}
 
-export function countVisit(reqParamsVariant) {
-	if(Object.prototype.hasOwnProperty.call(hitRatePerPortal, reqParamsVariant)) {
+export function countVisit (reqParamsVariant) {
+	if (Object.prototype.hasOwnProperty.call(hitRatePerPortal, reqParamsVariant)) {
 		hitRatePerPortal[reqParamsVariant] += 1
 	}
 }
 
-function setHitRatePerPortal(labels, via, prefix = '') {
-	if(labels.length === 0) {
+function setHitRatePerPortal (labels, via, prefix = '') {
+	if (labels.length === 0) {
 		hitRatePerPortal[prefix.slice(1)] = 0
 		return
 	}
-	const [ firstLabel, ...restLabels ] = labels
+	const [firstLabel, ...restLabels] = labels
 	const variants = Object.keys(via[firstLabel])
 
 	variants.forEach(variant => {
@@ -23,7 +22,7 @@ function setHitRatePerPortal(labels, via, prefix = '') {
 	})
 }
 
-function sendRequestCountsToApi() {
+function sendRequestCountsToApi () {
 	const data = JSON.stringify({
 		series: Object.keys(hitRatePerPortal).map(portal => ({
 			metric: 'portal.hit.rates',
@@ -33,7 +32,7 @@ function sendRequestCountsToApi() {
 					value: hitRatePerPortal[portal],
 				},
 			],
-			tags: [ `portal:${portal}`, `environment:${process.env.TRACKING_ENVIRONMENT}` ],
+			tags: [`portal:${portal}`, `environment:${process.env.TRACKING_ENVIRONMENT}`],
 		})),
 	})
 
@@ -48,7 +47,7 @@ function sendRequestCountsToApi() {
 	})
 		.then(response => response.text())
 		.then(responseData => {
-			console.log('Hit rates sent to Monitoring API', responseData)
+			console.info('Hit rates sent to Monitoring API', responseData)
 			Object.keys(hitRatePerPortal).forEach(portal => {
 				hitRatePerPortal[portal] = 0
 			})
@@ -58,7 +57,7 @@ function sendRequestCountsToApi() {
 		})
 }
 
-export function initTracking() {
+export function initTracking () {
 	const clientConfig = JSON.parse(readFileSync(fileURLToPath(new URL('../resources/clients.json', import.meta.url)), 'utf-8'))
 	setHitRatePerPortal(clientConfig.variantLabels, clientConfig.via)
 
