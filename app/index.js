@@ -87,7 +87,7 @@ app.use(async (req, res, next) => {
 })
 app.use(express.static('dist'))
 
-if(process.env.VARIANT_ONLY) {
+if(process.env.VARIANT_ONLY == true) {
 	// Rewrite to portal (variant-only)
 	app.use((req, res, next) => {
 		if(req.url.startsWith('/resources/')) {
