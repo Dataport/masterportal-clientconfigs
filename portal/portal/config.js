@@ -9,10 +9,10 @@ const Config = {
 	footer: {
 		urls: [
 			{
-				'bezeichnung': 'common:modules.footer.designation',
-				'url': 'https://geoinfo.hamburg.de/',
-				'alias': 'Landesbetrieb Geoinformation und Vermessung',
-				'alias_mobil': 'LGV',
+				bezeichnung: 'common:modules.footer.designation',
+				url: 'https://geoinfo.hamburg.de/',
+				alias: 'Landesbetrieb Geoinformation und Vermessung',
+				alias_mobil: 'LGV',
 			},
 		],
 		showVersion: true,
